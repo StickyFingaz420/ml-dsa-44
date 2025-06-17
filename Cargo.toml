@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Rust wrapper for ML-DSA-44 post-quantum digital signature algorithm"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/your-username/ml-dsa-44-rust"
+repository = "https://github.com/mraksoll4/ml-dsa-44-rust"
 
 [dependencies]
 libc = "0.2"
