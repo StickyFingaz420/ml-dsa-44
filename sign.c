@@ -228,11 +228,11 @@ rej:
     PQCLEAN_MLDSA44_CLEAN_polyveck_decompose(&w1, &w0, &w1);
     PQCLEAN_MLDSA44_CLEAN_polyveck_pack_w1(sig, &w1);
 
-    shake256_inc_init(&state);
-    shake256_inc_absorb(&state, mu, CRHBYTES);
-    shake256_inc_absorb(&state, sig, K * POLYW1_PACKEDBYTES);
-    shake256_inc_finalize(&state);
-    shake256_inc_squeeze(sig, CTILDEBYTES, &state);
+    mldsa44_shake256_inc_init(&state);
+    mldsa44_shake256_inc_absorb(&state, mu, CRHBYTES);
+    mldsa44_shake256_inc_absorb(&state, sig, K * POLYW1_PACKEDBYTES);
+    mldsa44_shake256_inc_finalize(&state);
+    mldsa44_shake256_inc_squeeze(sig, CTILDEBYTES, &state);
     mldsa44_shake256_inc_ctx_release(&state);
     PQCLEAN_MLDSA44_CLEAN_poly_challenge(&cp, sig);
     PQCLEAN_MLDSA44_CLEAN_poly_ntt(&cp);
@@ -371,8 +371,8 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_verify_ctx(const uint8_t *sig,
 
     /* Compute CRH(H(rho, t1), msg) */
     mldsa44_shake256(mu, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
-    shake256_inc_init(&state);
-    shake256_inc_absorb(&state, mu, TRBYTES);
+    mldsa44_shake256_inc_init(&state);
+    mldsa44_shake256_inc_absorb(&state, mu, TRBYTES);
     mu[0] = 0;
     mu[1] = (uint8_t)ctxlen;
     mldsa44_shake256_inc_absorb(&state, mu, 2);
@@ -404,11 +404,11 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_verify_ctx(const uint8_t *sig,
     PQCLEAN_MLDSA44_CLEAN_polyveck_pack_w1(buf, &w1);
 
     /* Call random oracle and verify challenge */
-    shake256_inc_init(&state);
-    shake256_inc_absorb(&state, mu, CRHBYTES);
-    shake256_inc_absorb(&state, buf, K * POLYW1_PACKEDBYTES);
-    shake256_inc_finalize(&state);
-    shake256_inc_squeeze(c2, CTILDEBYTES, &state);
+    mldsa44_shake256_inc_init(&state);
+    mldsa44_shake256_inc_absorb(&state, mu, CRHBYTES);
+    mldsa44_shake256_inc_absorb(&state, buf, K * POLYW1_PACKEDBYTES);
+    mldsa44_shake256_inc_finalize(&state);
+    mldsa44_shake256_inc_squeeze(c2, CTILDEBYTES, &state);
     mldsa44_shake256_inc_ctx_release(&state);
     for (i = 0; i < CTILDEBYTES; ++i) {
         if (c[i] != c2[i]) {

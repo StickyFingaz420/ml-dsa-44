@@ -483,10 +483,10 @@ void PQCLEAN_MLDSA44_CLEAN_poly_challenge(poly *c, const uint8_t seed[CTILDEBYTE
     uint8_t buf[SHAKE256_RATE];
     shake256incctx state;
 
-    shake256_inc_init(&state);
-    shake256_inc_absorb(&state, seed, CTILDEBYTES);
-    shake256_inc_finalize(&state);
-    shake256_inc_squeeze(buf, sizeof buf, &state);
+    mldsa44_shake256_inc_init(&state);
+    mldsa44_shake256_inc_absorb(&state, seed, CTILDEBYTES);
+    mldsa44_shake256_inc_finalize(&state);
+    mldsa44_shake256_inc_squeeze(buf, sizeof buf, &state);
 
     signs = 0;
     for (i = 0; i < 8; ++i) {
