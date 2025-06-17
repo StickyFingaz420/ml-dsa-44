@@ -1,19 +1,35 @@
-//! # ML-DSA-44 Rust Wrapper
-//! 
-//! A Rust wrapper for the ML-DSA-44 (Module-Lattice-Based Digital Signature Algorithm) 
-//! post-quantum cryptographic signature scheme.
+//! # ML-DSA-44 Rust Library
 //!
-//! ## Features
-//! - Key generation from random or seed
-//! - Digital signature creation and verification
-//! - Context-aware signing (optional context data)
-//! - Safe Rust API with proper error handling
+//! **Module-Lattice-Based Digital Signature Algorithm (ML-DSA-44)**
 //!
-//! ## Example
+//! ## Overview
+//! ML-DSA-44 is a post-quantum digital signature algorithm designed to be secure against attacks by quantum computers. This Rust library provides a safe, ergonomic interface to the ML-DSA-44 implementation.
+//!
+//! ## Key Features
+//! - Post-quantum security: Resistant to quantum computer attacks
+//! - Deterministic key generation: Generate keys from seeds for reproducible results
+//! - Context-aware signing: Support for additional context data in signatures
+//! - Memory-safe: Safe Rust API with proper error handling
+//! - Zero-copy operations: Efficient memory usage where possible
+//!
+//! ## Algorithm Parameters
+//! | Parameter   | Size (bytes) |
+//! |------------|--------------|
+//! | Public Key | 1,312        |
+//! | Secret Key | 2,560        |
+//! | Signature  | ≤ 2,420      |
+//! | Seed       | 32           |
+//!
+//! ## Installation
+//! ```toml
+//! [dependencies]
+//! ml-dsa-44 = "0.1.0"
+//! ```
+//!
+//! ## API Reference & Usage Examples
 //! ```rust
 //! use ml_dsa_44::{Keypair, sign, verify};
 //!
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! // Generate keypair
 //! let keypair = Keypair::generate()?;
 //!
@@ -24,9 +40,9 @@
 //! // Verify signature
 //! let is_valid = verify(&signature, message, &keypair.public_key)?;
 //! assert!(is_valid);
-//! # Ok(())
-//! # }
 //! ```
+//!
+//! For more, see the README and examples directory.
 
 use std::os::raw::{c_int, c_uchar};
 
@@ -312,3 +328,7 @@ mod tests {
         assert_eq!(keypair1.secret_key.0, keypair2.secret_key.0);
     }
 }
+
+#[cfg(target_os = "windows")]
+#[link(name = "advapi32")]
+extern "system" {}

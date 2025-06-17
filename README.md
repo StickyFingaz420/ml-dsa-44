@@ -1,10 +1,45 @@
-# ML-DSA-44 Rust Library Documentation
+# ML-DSA-44 Rust Library
 
-Rust wrapper for the ML-DSA-44 (Module-Lattice-Based Digital Signature Algorithm) post-quantum cryptographic signature scheme.
+**Module-Lattice-Based Digital Signature Algorithm (ML-DSA-44)**
+
+## Overview
+ML-DSA-44 is a post-quantum digital signature algorithm designed to be secure against attacks by quantum computers. This Rust library provides a safe, ergonomic interface to the ML-DSA-44 implementation.
+
+## Key Features
+- Post-quantum security: Resistant to quantum computer attacks
+- Deterministic key generation: Generate keys from seeds for reproducible results
+- Context-aware signing: Support for additional context data in signatures
+- Memory-safe: Safe Rust API with proper error handling
+- Zero-copy operations: Efficient memory usage where possible
+
+## Algorithm Parameters
+| Parameter   | Size (bytes) |
+|------------|--------------|
+| Public Key | 1,312        |
+| Secret Key | 2,560        |
+| Signature  | ≤ 2,420      |
+| Seed       | 32           |
+
+## Quick Start Example
+```rust
+use ml_dsa_44::{Keypair, sign, verify};
+
+// Generate keypair
+let keypair = Keypair::generate()?;
+
+// Sign message
+let message = b"Hello, post-quantum world!";
+let signature = sign(message, &keypair.secret_key)?;
+
+// Verify signature
+let is_valid = verify(&signature, message, &keypair.public_key)?;
+assert!(is_valid);
+```
+
+For more, see the [examples directory](examples/) and the API reference below.
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Installation](#installation)
 - [Building from Source](#building-from-source)
 - [API Reference](#api-reference)
@@ -13,27 +48,6 @@ Rust wrapper for the ML-DSA-44 (Module-Lattice-Based Digital Signature Algorithm
 - [Testing](#testing)
 - [Performance](#performance)
 - [Security Considerations](#security-considerations)
-
-## Overview
-
-ML-DSA-44 is a post-quantum digital signature algorithm designed to be secure against attacks by quantum computers. This Rust library provides a safe, ergonomic interface to the ML-DSA-44 implementation.
-
-### Key Features
-
-- **Post-quantum security**: Resistant to quantum computer attacks
-- **Deterministic key generation**: Generate keys from seeds for reproducible results
-- **Context-aware signing**: Support for additional context data in signatures
-- **Memory-safe**: Safe Rust API with proper error handling
-- **Zero-copy operations**: Efficient memory usage where possible
-
-### Algorithm Parameters (ML-DSA-44)
-
-| Parameter | Size (bytes) |
-|-----------|--------------|
-| Public Key | 1,312 |
-| Secret Key | 2,560 |
-| Signature | ≤ 2,420 |
-| Seed | 32 |
 
 ## Installation
 
