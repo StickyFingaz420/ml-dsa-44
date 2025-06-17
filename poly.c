@@ -500,7 +500,7 @@ void PQCLEAN_MLDSA44_CLEAN_poly_challenge(poly *c, const uint8_t seed[CTILDEBYTE
     for (i = N - TAU; i < N; ++i) {
         do {
             if (pos >= SHAKE256_RATE) {
-                shake256_inc_squeeze(buf, sizeof buf, &state);
+                mldsa44_shake256_inc_squeeze(buf, sizeof buf, &state);
                 pos = 0;
             }
 

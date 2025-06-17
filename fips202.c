@@ -522,7 +522,7 @@ static void keccak_inc_squeeze(uint8_t *h, size_t outlen,
     }
 }
 
-void shake128_inc_init(shake128incctx *state) {
+void mldsa44_shake128_inc_init(shake128incctx *state) {
     state->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -530,19 +530,19 @@ void shake128_inc_init(shake128incctx *state) {
     keccak_inc_init(state->ctx);
 }
 
-void shake128_inc_absorb(shake128incctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_shake128_inc_absorb(shake128incctx *state, const uint8_t *input, size_t inlen) {
     keccak_inc_absorb(state->ctx, SHAKE128_RATE, input, inlen);
 }
 
-void shake128_inc_finalize(shake128incctx *state) {
+void mldsa44_shake128_inc_finalize(shake128incctx *state) {
     keccak_inc_finalize(state->ctx, SHAKE128_RATE, 0x1F);
 }
 
-void shake128_inc_squeeze(uint8_t *output, size_t outlen, shake128incctx *state) {
+void mldsa44_shake128_inc_squeeze(uint8_t *output, size_t outlen, shake128incctx *state) {
     keccak_inc_squeeze(output, outlen, state->ctx, SHAKE128_RATE);
 }
 
-void shake128_inc_ctx_clone(shake128incctx *dest, const shake128incctx *src) {
+void mldsa44_shake128_inc_ctx_clone(shake128incctx *dest, const shake128incctx *src) {
     dest->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -550,11 +550,11 @@ void shake128_inc_ctx_clone(shake128incctx *dest, const shake128incctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKEINCCTX_BYTES);
 }
 
-void shake128_inc_ctx_release(shake128incctx *state) {
+void mldsa44_shake128_inc_ctx_release(shake128incctx *state) {
     free(state->ctx);
 }
 
-void shake256_inc_init(shake256incctx *state) {
+void mldsa44_shake256_inc_init(shake256incctx *state) {
     state->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -562,19 +562,19 @@ void shake256_inc_init(shake256incctx *state) {
     keccak_inc_init(state->ctx);
 }
 
-void shake256_inc_absorb(shake256incctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_shake256_inc_absorb(shake256incctx *state, const uint8_t *input, size_t inlen) {
     keccak_inc_absorb(state->ctx, SHAKE256_RATE, input, inlen);
 }
 
-void shake256_inc_finalize(shake256incctx *state) {
+void mldsa44_shake256_inc_finalize(shake256incctx *state) {
     keccak_inc_finalize(state->ctx, SHAKE256_RATE, 0x1F);
 }
 
-void shake256_inc_squeeze(uint8_t *output, size_t outlen, shake256incctx *state) {
+void mldsa44_shake256_inc_squeeze(uint8_t *output, size_t outlen, shake256incctx *state) {
     keccak_inc_squeeze(output, outlen, state->ctx, SHAKE256_RATE);
 }
 
-void shake256_inc_ctx_clone(shake256incctx *dest, const shake256incctx *src) {
+void mldsa44_shake256_inc_ctx_clone(shake256incctx *dest, const shake256incctx *src) {
     dest->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -582,22 +582,11 @@ void shake256_inc_ctx_clone(shake256incctx *dest, const shake256incctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKEINCCTX_BYTES);
 }
 
-void shake256_inc_ctx_release(shake256incctx *state) {
+void mldsa44_shake256_inc_ctx_release(shake256incctx *state) {
     free(state->ctx);
 }
 
-/*************************************************
- * Name:        shake128_absorb
- *
- * Description: Absorb step of the SHAKE128 XOF.
- *              non-incremental, starts by zeroeing the state.
- *
- * Arguments:   - uint64_t *s: pointer to (uninitialized) output Keccak state
- *              - const uint8_t *input: pointer to input to be absorbed
- *                                            into s
- *              - size_t inlen: length of input in bytes
- **************************************************/
-void shake128_absorb(shake128ctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_shake128_absorb(shake128ctx *state, const uint8_t *input, size_t inlen) {
     state->ctx = malloc(PQC_SHAKECTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -605,23 +594,11 @@ void shake128_absorb(shake128ctx *state, const uint8_t *input, size_t inlen) {
     keccak_absorb(state->ctx, SHAKE128_RATE, input, inlen, 0x1F);
 }
 
-/*************************************************
- * Name:        shake128_squeezeblocks
- *
- * Description: Squeeze step of SHAKE128 XOF. Squeezes full blocks of
- *              SHAKE128_RATE bytes each. Modifies the state. Can be called
- *              multiple times to keep squeezing, i.e., is incremental.
- *
- * Arguments:   - uint8_t *output: pointer to output blocks
- *              - size_t nblocks: number of blocks to be squeezed
- *                                            (written to output)
- *              - shake128ctx *state: pointer to input/output Keccak state
- **************************************************/
-void shake128_squeezeblocks(uint8_t *output, size_t nblocks, shake128ctx *state) {
+void mldsa44_shake128_squeezeblocks(uint8_t *output, size_t nblocks, shake128ctx *state) {
     keccak_squeezeblocks(output, nblocks, state->ctx, SHAKE128_RATE);
 }
 
-void shake128_ctx_clone(shake128ctx *dest, const shake128ctx *src) {
+void mldsa44_shake128_ctx_clone(shake128ctx *dest, const shake128ctx *src) {
     dest->ctx = malloc(PQC_SHAKECTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -629,23 +606,11 @@ void shake128_ctx_clone(shake128ctx *dest, const shake128ctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKECTX_BYTES);
 }
 
-/** Release the allocated state. Call only once. */
-void shake128_ctx_release(shake128ctx *state) {
+void mldsa44_shake128_ctx_release(shake128ctx *state) {
     free(state->ctx);
 }
 
-/*************************************************
- * Name:        shake256_absorb
- *
- * Description: Absorb step of the SHAKE256 XOF.
- *              non-incremental, starts by zeroeing the state.
- *
- * Arguments:   - shake256ctx *state: pointer to (uninitialized) output Keccak state
- *              - const uint8_t *input: pointer to input to be absorbed
- *                                            into s
- *              - size_t inlen: length of input in bytes
- **************************************************/
-void shake256_absorb(shake256ctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_shake256_absorb(shake256ctx *state, const uint8_t *input, size_t inlen) {
     state->ctx = malloc(PQC_SHAKECTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -653,23 +618,11 @@ void shake256_absorb(shake256ctx *state, const uint8_t *input, size_t inlen) {
     keccak_absorb(state->ctx, SHAKE256_RATE, input, inlen, 0x1F);
 }
 
-/*************************************************
- * Name:        shake256_squeezeblocks
- *
- * Description: Squeeze step of SHAKE256 XOF. Squeezes full blocks of
- *              SHAKE256_RATE bytes each. Modifies the state. Can be called
- *              multiple times to keep squeezing, i.e., is incremental.
- *
- * Arguments:   - uint8_t *output: pointer to output blocks
- *              - size_t nblocks: number of blocks to be squeezed
- *                                (written to output)
- *              - shake256ctx *state: pointer to input/output Keccak state
- **************************************************/
-void shake256_squeezeblocks(uint8_t *output, size_t nblocks, shake256ctx *state) {
+void mldsa44_shake256_squeezeblocks(uint8_t *output, size_t nblocks, shake256ctx *state) {
     keccak_squeezeblocks(output, nblocks, state->ctx, SHAKE256_RATE);
 }
 
-void shake256_ctx_clone(shake256ctx *dest, const shake256ctx *src) {
+void mldsa44_shake256_ctx_clone(shake256ctx *dest, const shake256ctx *src) {
     dest->ctx = malloc(PQC_SHAKECTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -677,74 +630,53 @@ void shake256_ctx_clone(shake256ctx *dest, const shake256ctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKECTX_BYTES);
 }
 
-/** Release the allocated state. Call only once. */
-void shake256_ctx_release(shake256ctx *state) {
+void mldsa44_shake256_ctx_release(shake256ctx *state) {
     free(state->ctx);
 }
 
-/*************************************************
- * Name:        shake128
- *
- * Description: SHAKE128 XOF with non-incremental API
- *
- * Arguments:   - uint8_t *output: pointer to output
- *              - size_t outlen: requested output length in bytes
- *              - const uint8_t *input: pointer to input
- *              - size_t inlen: length of input in bytes
- **************************************************/
-void shake128(uint8_t *output, size_t outlen,
+void mldsa44_shake128(uint8_t *output, size_t outlen,
               const uint8_t *input, size_t inlen) {
     size_t nblocks = outlen / SHAKE128_RATE;
     uint8_t t[SHAKE128_RATE];
     shake128ctx s;
 
-    shake128_absorb(&s, input, inlen);
-    shake128_squeezeblocks(output, nblocks, &s);
+    mldsa44_shake128_absorb(&s, input, inlen);
+    mldsa44_shake128_squeezeblocks(output, nblocks, &s);
 
     output += nblocks * SHAKE128_RATE;
     outlen -= nblocks * SHAKE128_RATE;
 
     if (outlen) {
-        shake128_squeezeblocks(t, 1, &s);
+        mldsa44_shake128_squeezeblocks(t, 1, &s);
         for (size_t i = 0; i < outlen; ++i) {
             output[i] = t[i];
         }
     }
-    shake128_ctx_release(&s);
+    mldsa44_shake128_ctx_release(&s);
 }
 
-/*************************************************
- * Name:        shake256
- *
- * Description: SHAKE256 XOF with non-incremental API
- *
- * Arguments:   - uint8_t *output: pointer to output
- *              - size_t outlen: requested output length in bytes
- *              - const uint8_t *input: pointer to input
- *              - size_t inlen: length of input in bytes
- **************************************************/
-void shake256(uint8_t *output, size_t outlen,
+void mldsa44_shake256(uint8_t *output, size_t outlen,
               const uint8_t *input, size_t inlen) {
     size_t nblocks = outlen / SHAKE256_RATE;
     uint8_t t[SHAKE256_RATE];
     shake256ctx s;
 
-    shake256_absorb(&s, input, inlen);
-    shake256_squeezeblocks(output, nblocks, &s);
+    mldsa44_shake256_absorb(&s, input, inlen);
+    mldsa44_shake256_squeezeblocks(output, nblocks, &s);
 
     output += nblocks * SHAKE256_RATE;
     outlen -= nblocks * SHAKE256_RATE;
 
     if (outlen) {
-        shake256_squeezeblocks(t, 1, &s);
+        mldsa44_shake256_squeezeblocks(t, 1, &s);
         for (size_t i = 0; i < outlen; ++i) {
             output[i] = t[i];
         }
     }
-    shake256_ctx_release(&s);
+    mldsa44_shake256_ctx_release(&s);
 }
 
-void sha3_256_inc_init(sha3_256incctx *state) {
+void mldsa44_sha3_256_inc_init(sha3_256incctx *state) {
     state->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -752,7 +684,7 @@ void sha3_256_inc_init(sha3_256incctx *state) {
     keccak_inc_init(state->ctx);
 }
 
-void sha3_256_inc_ctx_clone(sha3_256incctx *dest, const sha3_256incctx *src) {
+void mldsa44_sha3_256_inc_ctx_clone(sha3_256incctx *dest, const sha3_256incctx *src) {
     dest->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -760,37 +692,28 @@ void sha3_256_inc_ctx_clone(sha3_256incctx *dest, const sha3_256incctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKEINCCTX_BYTES);
 }
 
-void sha3_256_inc_ctx_release(sha3_256incctx *state) {
+void mldsa44_sha3_256_inc_ctx_release(sha3_256incctx *state) {
     free(state->ctx);
 }
 
-void sha3_256_inc_absorb(sha3_256incctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_256_inc_absorb(sha3_256incctx *state, const uint8_t *input, size_t inlen) {
     keccak_inc_absorb(state->ctx, SHA3_256_RATE, input, inlen);
 }
 
-void sha3_256_inc_finalize(uint8_t *output, sha3_256incctx *state) {
+void mldsa44_sha3_256_inc_finalize(uint8_t *output, sha3_256incctx *state) {
     uint8_t t[SHA3_256_RATE];
     keccak_inc_finalize(state->ctx, SHA3_256_RATE, 0x06);
 
     keccak_squeezeblocks(t, 1, state->ctx, SHA3_256_RATE);
 
-    sha3_256_inc_ctx_release(state);
+    mldsa44_sha3_256_inc_ctx_release(state);
 
     for (size_t i = 0; i < 32; i++) {
         output[i] = t[i];
     }
 }
 
-/*************************************************
- * Name:        sha3_256
- *
- * Description: SHA3-256 with non-incremental API
- *
- * Arguments:   - uint8_t *output:      pointer to output
- *              - const uint8_t *input: pointer to input
- *              - size_t inlen:   length of input in bytes
- **************************************************/
-void sha3_256(uint8_t *output, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_256(uint8_t *output, const uint8_t *input, size_t inlen) {
     uint64_t s[25];
     uint8_t t[SHA3_256_RATE];
 
@@ -805,7 +728,7 @@ void sha3_256(uint8_t *output, const uint8_t *input, size_t inlen) {
     }
 }
 
-void sha3_384_inc_init(sha3_384incctx *state) {
+void mldsa44_sha3_384_inc_init(sha3_384incctx *state) {
     state->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -813,7 +736,7 @@ void sha3_384_inc_init(sha3_384incctx *state) {
     keccak_inc_init(state->ctx);
 }
 
-void sha3_384_inc_ctx_clone(sha3_384incctx *dest, const sha3_384incctx *src) {
+void mldsa44_sha3_384_inc_ctx_clone(sha3_384incctx *dest, const sha3_384incctx *src) {
     dest->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -821,37 +744,28 @@ void sha3_384_inc_ctx_clone(sha3_384incctx *dest, const sha3_384incctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKEINCCTX_BYTES);
 }
 
-void sha3_384_inc_absorb(sha3_384incctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_384_inc_absorb(sha3_384incctx *state, const uint8_t *input, size_t inlen) {
     keccak_inc_absorb(state->ctx, SHA3_384_RATE, input, inlen);
 }
 
-void sha3_384_inc_ctx_release(sha3_384incctx *state) {
+void mldsa44_sha3_384_inc_ctx_release(sha3_384incctx *state) {
     free(state->ctx);
 }
 
-void sha3_384_inc_finalize(uint8_t *output, sha3_384incctx *state) {
+void mldsa44_sha3_384_inc_finalize(uint8_t *output, sha3_384incctx *state) {
     uint8_t t[SHA3_384_RATE];
     keccak_inc_finalize(state->ctx, SHA3_384_RATE, 0x06);
 
     keccak_squeezeblocks(t, 1, state->ctx, SHA3_384_RATE);
 
-    sha3_384_inc_ctx_release(state);
+    mldsa44_sha3_384_inc_ctx_release(state);
 
     for (size_t i = 0; i < 48; i++) {
         output[i] = t[i];
     }
 }
 
-/*************************************************
- * Name:        sha3_384
- *
- * Description: SHA3-256 with non-incremental API
- *
- * Arguments:   - uint8_t *output:      pointer to output
- *              - const uint8_t *input: pointer to input
- *              - size_t inlen:   length of input in bytes
- **************************************************/
-void sha3_384(uint8_t *output, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_384(uint8_t *output, const uint8_t *input, size_t inlen) {
     uint64_t s[25];
     uint8_t t[SHA3_384_RATE];
 
@@ -866,7 +780,7 @@ void sha3_384(uint8_t *output, const uint8_t *input, size_t inlen) {
     }
 }
 
-void sha3_512_inc_init(sha3_512incctx *state) {
+void mldsa44_sha3_512_inc_init(sha3_512incctx *state) {
     state->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (state->ctx == NULL) {
         exit(111);
@@ -874,7 +788,7 @@ void sha3_512_inc_init(sha3_512incctx *state) {
     keccak_inc_init(state->ctx);
 }
 
-void sha3_512_inc_ctx_clone(sha3_512incctx *dest, const sha3_512incctx *src) {
+void mldsa44_sha3_512_inc_ctx_clone(sha3_512incctx *dest, const sha3_512incctx *src) {
     dest->ctx = malloc(PQC_SHAKEINCCTX_BYTES);
     if (dest->ctx == NULL) {
         exit(111);
@@ -882,37 +796,28 @@ void sha3_512_inc_ctx_clone(sha3_512incctx *dest, const sha3_512incctx *src) {
     memcpy(dest->ctx, src->ctx, PQC_SHAKEINCCTX_BYTES);
 }
 
-void sha3_512_inc_absorb(sha3_512incctx *state, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_512_inc_absorb(sha3_512incctx *state, const uint8_t *input, size_t inlen) {
     keccak_inc_absorb(state->ctx, SHA3_512_RATE, input, inlen);
 }
 
-void sha3_512_inc_ctx_release(sha3_512incctx *state) {
+void mldsa44_sha3_512_inc_ctx_release(sha3_512incctx *state) {
     free(state->ctx);
 }
 
-void sha3_512_inc_finalize(uint8_t *output, sha3_512incctx *state) {
+void mldsa44_sha3_512_inc_finalize(uint8_t *output, sha3_512incctx *state) {
     uint8_t t[SHA3_512_RATE];
     keccak_inc_finalize(state->ctx, SHA3_512_RATE, 0x06);
 
     keccak_squeezeblocks(t, 1, state->ctx, SHA3_512_RATE);
 
-    sha3_512_inc_ctx_release(state);
+    mldsa44_sha3_512_inc_ctx_release(state);
 
     for (size_t i = 0; i < 64; i++) {
         output[i] = t[i];
     }
 }
 
-/*************************************************
- * Name:        sha3_512
- *
- * Description: SHA3-512 with non-incremental API
- *
- * Arguments:   - uint8_t *output:      pointer to output
- *              - const uint8_t *input: pointer to input
- *              - size_t inlen:   length of input in bytes
- **************************************************/
-void sha3_512(uint8_t *output, const uint8_t *input, size_t inlen) {
+void mldsa44_sha3_512(uint8_t *output, const uint8_t *input, size_t inlen) {
     uint64_t s[25];
     uint8_t t[SHA3_512_RATE];
 

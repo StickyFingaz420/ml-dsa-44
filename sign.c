@@ -34,7 +34,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     randombytes(seedbuf, SEEDBYTES);
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
-    shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
+    mldsa44_shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
     rho = seedbuf;
     rhoprime = rho + SEEDBYTES;
     key = rhoprime + CRHBYTES;
@@ -62,7 +62,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     PQCLEAN_MLDSA44_CLEAN_pack_pk(pk, rho, &t1);
 
     /* Compute H(rho, t1) and write secret key */
-    shake256(tr, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
+    mldsa44_shake256(tr, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
     PQCLEAN_MLDSA44_CLEAN_pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
 
     memory_cleanse(seedbuf, sizeof(seedbuf));
@@ -106,7 +106,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *s
     memcpy(seedbuf, seed, SEEDBYTES);
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
-    shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
+    mldsa44_shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
     rho = seedbuf;
     rhoprime = rho + SEEDBYTES;
     key = rhoprime + CRHBYTES;
@@ -134,7 +134,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *s
     PQCLEAN_MLDSA44_CLEAN_pack_pk(pk, rho, &t1);
 
     /* Compute H(rho, t1) and write secret key */
-    shake256(tr, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
+    mldsa44_shake256(tr, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
     PQCLEAN_MLDSA44_CLEAN_pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
 
     memory_cleanse(seedbuf, sizeof(seedbuf));
@@ -204,7 +204,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_signature_ctx(uint8_t *sig,
     shake256_inc_ctx_release(&state);
 
     randombytes(rnd, RNDBYTES);
-    shake256(rhoprime, CRHBYTES, key, SEEDBYTES + RNDBYTES + CRHBYTES);
+    mldsa44_shake256(rhoprime, CRHBYTES, key, SEEDBYTES + RNDBYTES + CRHBYTES);
 
     /* Expand matrix and transform vectors */
     PQCLEAN_MLDSA44_CLEAN_polyvec_matrix_expand(mat, rho);
@@ -370,7 +370,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_verify_ctx(const uint8_t *sig,
     }
 
     /* Compute CRH(H(rho, t1), msg) */
-    shake256(mu, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
+    mldsa44_shake256(mu, TRBYTES, pk, PQCLEAN_MLDSA44_CLEAN_CRYPTO_PUBLICKEYBYTES);
     shake256_inc_init(&state);
     shake256_inc_absorb(&state, mu, TRBYTES);
     mu[0] = 0;
