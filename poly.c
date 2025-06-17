@@ -419,7 +419,7 @@ static unsigned int rej_eta(int32_t *a,
 *              output stream from SHAKE256(seed|nonce)
 *
 * Arguments:   - poly *a: pointer to output polynomial
-*              - const uint8_t seed[]: byte array with seed of length CRHBYTES
+*              - const uint8_t seed[CRHBYTES]: byte array with seed of length CRHBYTES
 *              - uint16_t nonce: 2-byte nonce
 **************************************************/
 #define POLY_UNIFORM_ETA_NBLOCKS ((136 + STREAM256_BLOCKBYTES - 1)/STREAM256_BLOCKBYTES)
@@ -451,7 +451,7 @@ void PQCLEAN_MLDSA44_CLEAN_poly_uniform_eta(poly *a,
 *              of SHAKE256(seed|nonce)
 *
 * Arguments:   - poly *a: pointer to output polynomial
-*              - const uint8_t seed[]: byte array with seed of length CRHBYTES
+*              - const uint8_t seed[CRHBYTES]: byte array with seed of length CRHBYTES
 *              - uint16_t nonce: 16-bit nonce
 **************************************************/
 #define POLY_UNIFORM_GAMMA1_NBLOCKS ((POLYZ_PACKEDBYTES + STREAM256_BLOCKBYTES - 1)/STREAM256_BLOCKBYTES)
@@ -511,7 +511,7 @@ void PQCLEAN_MLDSA44_CLEAN_poly_challenge(poly *c, const uint8_t seed[CTILDEBYTE
         c->coeffs[b] = 1 - 2 * (signs & 1);
         signs >>= 1;
     }
-    shake256_inc_ctx_release(&state);
+    mldsa44_shake256_inc_ctx_release(&state);
 }
 
 /*************************************************
